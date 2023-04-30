@@ -1,0 +1,107 @@
+stages:
+  - build
+  - test
+  - publish
+  - deploy
+
+build:
+  stage: build
+  image: curlimages/curl
+  variables:
+    build_error: "true"
+  script:
+    - |
+      if [ "$build_error" = "true" ]; then
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Token token=$pagerduty_token" \
+          -d '{
+                "incident": {
+                  "type": "incident",
+                  "title": "test-task-3 build failed",
+                  "service": {
+                    "id": "POMG4DX",
+                    "type": "service_reference"
+                  }
+                }
+              }' \
+          "https://api.pagerduty.com/incidents"
+          exit 1
+      fi
+
+test:
+  stage: test
+  image: curlimages/curl
+  variables:
+    test_error: "true"
+  script:
+    - |
+      if [ "$test_error" = "true" ]; then
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Token token=$pagerduty_token" \
+          -d '{
+                "incident": {
+                  "type": "incident",
+                  "title": "test-task-3 test failed",
+                  "service": {
+                    "id": "POMG4DX",
+                    "type": "service_reference"
+                  }
+                }
+              }' \
+          "https://api.pagerduty.com/incidents"
+          exit 1
+        fi
+
+
+publish:
+  stage: publish
+  image: curlimages/curl
+  variables:
+    publish_error: "true"
+  script:
+    - |
+      if [ "$publish_error" = "true" ]; then
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Token token=$pagerduty_token" \
+          -d '{
+                "incident": {
+                  "type": "incident",
+                  "title": "test-task-3 publish failed",
+                  "service": {
+                    "id": "POMG4DX",
+                    "type": "service_reference"
+                  }
+                }
+              }' \
+          "https://api.pagerduty.com/incidents"
+          exit 1
+      fi
+
+
+deploy:
+  stage: deploy
+  image: curlimages/curl
+  variables:
+    deploy_error: "true"
+  script:
+    - |
+      if [ "$deploy_error" = "true" ]; then
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Token token=$pagerduty_token" \
+          -d '{
+                "incident": {
+                  "type": "incident",
+                  "title": "test-task-3 deploy failed",
+                  "service": {
+                    "id": "POMG4DX",
+                    "type": "service_reference"
+                  }
+                }
+              }' \
+          "https://api.pagerduty.com/incidents"
+          exit 1
+      fi
